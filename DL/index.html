@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lễ hội Địa phương Tháng 9 - Hà Nội 2024</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #45a049;
+            --text-color: #333;
+            --bg-color: #f5f5f5;
+            --card-bg: #ffffff;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        .section {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .tabs {
+            display: flex;
+            background-color: #333;
+            padding: 0;
+            border-radius: 10px 10px 0 0;
+            overflow: hidden;
+        }
+        .tab {
+            color: white;
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            flex-grow: 1;
+            text-align: center;
+            font-weight: 500;
+        }
+        .tab:hover, .tab.active {
+            background-color: var(--primary-color);
+        }
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+        .list-item {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .list-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .list-item h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 5% auto;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+        #map {
+            height: 300px;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        .hero {
+            background-image: url('https://resonance.bestlooker.pro/images/demo-strong/section-bg-3.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 800px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+        }
+        .hero-content {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 2em;
+            border-radius: 10px;
+        }
+        .news-section {
+            margin-top: 2rem;
+        }
+        .news-item {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .news-date {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .image-slider {
+            width: 100%;
+            overflow-x: auto;
+            white-space: nowrap;
+            margin-bottom: 20px;
+        }
+        .image-slider img {
+            display: inline-block;
+            width: 350px;
+            height: 250px;
+            object-fit: cover;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+        .video-container {
+            width: 100%;
+            margin-top: 20px;
+        }
+        .video-container video {
+            width: 100%;
+            border-radius: 5px;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Lễ hội Địa phương Tháng 9 - Hà Nội 2024</h1>
+    </header>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h2>Chào mừng đến với Lễ hội Địa phương Tháng 9</h2>
+            <p>Khám phá văn hóa, ẩm thực và niềm vui tại lễ hội lớn nhất năm của chúng tôi!</p>
+            <a href="#" class="btn">Tìm hiểu thêm</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <section class="section">
+            <h2>Giới thiệu về Lễ hội</h2>
+            <p>Lễ hội Địa phương Tháng 9 là sự kiện thường niên lớn nhất của Hà Nội, tôn vinh văn hóa và truyền thống phong phú của thủ đô. Trong suốt một tuần, du khách sẽ được trải nghiệm các hoạt động đa dạng từ biểu diễn nghệ thuật truyền thống đến ẩm thực đường phố, từ triển lãm nghệ thuật đương đại đến các trò chơi dân gian.</p>
+            <p>Năm nay, với chủ đề "Hà Nội - Nơi hội tụ tinh hoa", lễ hội hứa hẹn mang đến những trải nghiệm độc đáo và đáng nhớ cho cả người dân địa phương và du khách.</p>
+        </section>
+
+        <div class="section">
+            <div class="tabs">
+                <div class="tab active" data-tab="all">Tất cả</div>
+                <div class="tab" data-tab="restaurant">Nhà hàng</div>
+                <div class="tab" data-tab="event">Sự kiện</div>
+                <div class="tab" data-tab="tourism">Du lịch</div>
+                <div class="tab" data-tab="entertainment">Giải trí</div>
+            </div>
+            <div id="listView">
+                <div class="tab-content active" id="all">
+                    <div class="content-grid" id="allContent"></div>
+                </div>
+                <div class="tab-content" id="restaurant">
+                    <div class="content-grid" id="restaurantContent"></div>
+                </div>
+                <div class="tab-content" id="event">
+                    <div class="content-grid" id="eventContent"></div>
+                </div>
+                <div class="tab-content" id="tourism">
+                    <div class="content-grid" id="tourismContent"></div>
+                </div>
+                <div class="tab-content" id="entertainment">
+                    <div class="content-grid" id="entertainmentContent"></div>
+                </div>
+            </div>
+        </div>
+
+        <section class="news-section">
+            <h2>Tin tức & Cập nhật</h2>
+            <div class="news-item">
+                <h3>Công bố Chương trình Chi tiết Lễ hội</h3>
+                <p class="news-date">15/08/2024</p>
+                <p>Ban tổ chức vừa công bố chương trình chi tiết của Lễ hội Địa phương Tháng 9. Năm nay, lễ hội sẽ có hơn 100 hoạt động diễn ra tại 5 địa điểm chính trong thành phố...</p>
+                <a href="#" class="btn">Đọc thêm</a>
+            </div>
+            <div class="news-item">
+                <h3>Mở Đăng Ký cho Tình nguyện viên</h3>
+                <p class="news-date">10/08/2024</p>
+                <p>Bạn muốn trở thành một phần của Lễ hội Địa phương Tháng 9? Chúng tôi đang tìm kiếm 500 tình nguyện viên nhiệt huyết để hỗ trợ các hoạt động của lễ hội...</p>
+                <a href="#" class="btn">Đăng ký ngay</a>
+            </div>
+        </section>
+    </div>
+
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <div class="image-slider" id="imageSlider"></div>
+            <div id="modalContent"></div>
+            <div id="map"></div>
+            <div class="video-container" id="videoContainer"></div>
+        </div>
+    </div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+    <script>
+        const sampleData = [
+            { 
+                id: 1, 
+                name: "Nhà hàng Phố Cổ", 
+                type: "restaurant", 
+                description: "Ẩm thực Việt Nam truyền thống",
+                fullDescription: "Nhà hàng Phố Cổ mang đến trải nghiệm ẩm thực Việt Nam đích thực với không gian đậm chất hoài cổ. Thực đơn đa dạng với các món ăn đặc trưng từ ba miền, được chế biến bởi đầu bếp có kinh nghiệm lâu năm. Đặc biệt, nhà hàng nổi tiếng với món phở gia truyền và các loại nem cuốn tươi ngon.",
+                address: "15 Hàng Bạc, Hoàn Kiếm, Hà Nội",
+                openHours: "10:00 - 22:00 hàng ngày",
+                price: "150.000 - 300.000 VNĐ/người",
+                lat: 21.0358, 
+                lng: 105.8512,
+                images: ["https://toka.peerduck.com/wp-content/uploads/2022/05/rkgmv.png","https://toka.peerduck.com/wp-content/uploads/2022/05/rkgmv.png","https://toka.peerduck.com/wp-content/uploads/2022/05/rkgmv.png", "https://toka.peerduck.com/wp-content/uploads/2022/05/rkgmv.png", "https://toka.peerduck.com/wp-content/uploads/2022/05/rkgmv.png"],
+                video: "/api/placeholder-video"
+            },
+            { 
+                id: 2, 
+                name: "Đêm nhạc dân gian", 
+                type: "event", 
+                description: "Buổi biểu diễn âm nhạc truyền thống",
+                fullDescription: "Đêm nhạc dân gian là sự kiện không thể bỏ lỡ trong khuôn khổ Lễ hội Địa phương Tháng 9. Chương trình quy tụ các nghệ sĩ nổi tiếng trong lĩnh vực âm nhạc dân tộc, mang đến cho khán giả những làn điệu dân ca đặc sắc từ khắp mọi miền đất nước. Ngoài ra, khán giả còn có cơ hội tham gia vào các hoạt động tương tác và học hỏi về các nhạc cụ dân tộc.",
+                address: "Nhà hát Lớn Hà Nội, 1 Tràng Tiền, Hoàn Kiếm, Hà Nội",
+                date: "3/9/2024",
+                time: "20:00 - 22:30",
+                ticketPrice: "200.000 - 500.000 VNĐ",
+                lat: 21.0242, 
+                lng: 105.8573,
+                images: ["/api/placeholder/200/150", "/api/placeholder/200/150", "/api/placeholder/200/150"],
+                video: "/api/placeholder-video"
+            },
+            { 
+                id: 3, 
+                name: "Bảo tàng Dân tộc học Việt Nam", 
+                type: "tourism", 
+                description: "Khám phá văn hóa đa dạng của Việt Nam",
+                fullDescription: "Bảo tàng Dân tộc học Việt Nam là điểm đến không thể bỏ qua cho những ai muốn tìm hiểu sâu về văn hóa đa dạng của 54 dân tộc Việt Nam. Trong dịp lễ hội, bảo tàng tổ chức các tour tham quan đặc biệt và triển lãm chuyên đề về các lễ hội truyền thống của các dân tộc thiểu số.",
+                address: "Nguyễn Văn Huyên, Nghĩa Đô, Cầu Giấy, Hà Nội",
+                openHours: "8:30 - 17:30 (đóng cửa vào thứ Hai)",
+                ticketPrice: "40.000 VNĐ/người lớn, 10.000 VNĐ/học sinh, sinh viên",
+                lat: 21.0407, 
+                lng: 105.7980,
+                images: ["/api/placeholder/200/150", "/api/placeholder/200/150", "/api/placeholder/200/150"],
+                video: "/api/placeholder-video"
+            },
+            { 
+                id: 4, 
+                name: "Lễ hội Ánh sáng Hồ Gươm", 
+                type: "entertainment", 
+                description: "Trải nghiệm ánh sáng tuyệt đẹp quanh Hồ Gươm",
+                fullDescription: "Lễ hội Ánh sáng Hồ Gươm là điểm nhấn mới của Lễ hội Địa phương Tháng 9, mang đến trải nghiệm visual độc đáo cho du khách. Với hàng triệu bóng đèn LED và các tác phẩm nghệ thuật ánh sáng tương tác, khu vực quanh Hồ Gươm biến hóa thành một thế giới ma thuật khi màn đêm buông xuống. Điểm nhấn của lễ hội là show diễn 3D mapping hoành tráng trên mặt hồ, kể lại lịch sử hào hùng của Hà Nội.",
+                address: "Quanh Hồ Hoàn Kiếm, Hà Nội",
+                openHours: "19:00 - 23:00 hàng ngày trong suốt thời gian lễ hội",
+                ticketPrice: "Miễn phí",
+                lat: 21.0287, 
+                lng: 105.8524,
+                images: ["/api/placeholder/200/150", "/api/placeholder/200/150", "/api/placeholder/200/150"],
+                video: "/api/placeholder-video"
+            },
+        ];
+
+        function createListItem(item) {
+            return `
+                <div class="list-item">
+                    <h3>${item.name}</h3>
+                    <p><strong>Loại:</strong> ${item.type}</p>
+                    <p><strong>Mô tả:</strong> ${item.description}</p>
+                    <button class="btn detail-btn" data-id="${item.id}">Xem chi tiết</button>
+                </div>
+            `;
+        }
+
+        function renderItems(items, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = items.map(createListItem).join('');
+        }
+
+        function loadItems() {
+            renderItems(sampleData, 'allContent');
+            renderItems(sampleData.filter(item => item.type === 'restaurant'), 'restaurantContent');
+            renderItems(sampleData.filter(item => item.type === 'event'), 'eventContent');
+            renderItems(sampleData.filter(item => item.type === 'tourism'), 'tourismContent');
+            renderItems(sampleData.filter(item => item.type === 'entertainment'), 'entertainmentContent');
+        }
+
+        function showItemDetails(item) {
+            const modal = document.getElementById('detailModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            const imageSlider = document.getElementById('imageSlider');
+            const videoContainer = document.getElementById('videoContainer');
+
+            modalTitle.textContent = item.name;
+
+            // Thêm hình ảnh vào thanh trượt
+            imageSlider.innerHTML = item.images.map(img => `<img src="${img}" alt="${item.name}">`).join('');
+
+            modalContent.innerHTML = `
+                <p><strong>Mô tả:</strong> ${item.fullDescription}</p>
+                <p><strong>Địa chỉ:</strong> ${item.address}</p>
+                ${item.openHours ? `<p><strong>Giờ mở cửa:</strong> ${item.openHours}</p>` : ''}
+                ${item.date ? `<p><strong>Ngày:</strong> ${item.date}</p>` : ''}
+                ${item.time ? `<p><strong>Thời gian:</strong> ${item.time}</p>` : ''}
+                ${item.price || item.ticketPrice ? `<p><strong>Giá:</strong> ${item.price || item.ticketPrice}</p>` : ''}
+            `;
+
+            // Thêm video
+            videoContainer.innerHTML = `<video controls><source src="${item.video}" type="video/mp4">Your browser does not support the video tag.</video>`;
+
+            modal.style.display = 'block';
+
+            // Hiển thị bản đồ
+            const map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: item.lat, lng: item.lng },
+                zoom: 15
+            });
+
+            new google.maps.Marker({
+                position: { lat: item.lat, lng: item.lng },
+                map: map,
+                title: item.name
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const modal = document.getElementById('detailModal');
+            const closeBtn = document.getElementsByClassName('close')[0];
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+
+                    // Tải lại nội dung cho tab được chọn
+                    if (tabId === 'all') {
+                        renderItems(sampleData, 'allContent');
+                    } else {
+                        const filteredData = sampleData.filter(item => item.type === tabId);
+                        renderItems(filteredData, `${tabId}Content`);
+                    }
+                });
+            });
+
+            closeBtn.onclick = function() {
+                modal.style.display = 'none';
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+
+            // Tải nội dung ban đầu cho tab "Tất cả"
+            renderItems(sampleData, 'allContent');
+
+            // Thêm sự kiện click cho nút "Xem chi tiết"
+            document.addEventListener('click', function(e) {
+                if (e.target && e.target.classList.contains('detail-btn')) {
+                    const itemId = e.target.getAttribute('data-id');
+                    const item = sampleData.find(i => i.id == itemId);
+                    if (item) {
+                        showItemDetails(item);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
